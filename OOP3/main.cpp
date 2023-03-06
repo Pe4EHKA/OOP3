@@ -26,6 +26,16 @@ public:
         data = nullptr;  // Чтобы не указывал на освобожденную память(никуда).
         size = 0;
     }
+    
+    void getsize() {
+        return size;
+    }
+    
+    int& operator[] (int index) {
+        assert(size >= 0 && index <= size);
+        return data[index];
+    }
+    
 };
 
 int main() {
