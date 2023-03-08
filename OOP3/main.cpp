@@ -2,51 +2,13 @@
 #include <cassert>
 #include <cstdlib>
 #include <ctime>
+#include <string>
 
 template <class T>
 class MyStorage {
-private:
+protected:
     int size;
     T* data;
-    
-    void MergeSort(T *arr, int a_len) {
-        if (a_len <= 1) {
-            return;
-        }
-        int firstLen = a_len / 2;
-        int secondLen = a_len - firstLen;
-        MergeSort(arr, firstLen);
-        MergeSort(arr + firstLen, secondLen);  // arr + firstlen -> вернется массив после первых firstLen элементов
-        T *c = new T[a_len];
-        Merge(arr, firstLen, arr + firstLen, secondLen, c);
-        for (int i = 0; i < a_len; ++i) {
-            arr[i] = c[i];
-        }
-        delete[] c;
-    }
-    
-    void Merge(const T *arr, int a_len, const T *b, int b_len, T *c) {
-        int i = 0;
-        int j = 0;
-        while(i < a_len && j < b_len) {
-            if (arr[i] <= b[j]) {
-                c[i + j] = arr[i];
-                ++i;
-            } else {
-                c[i + j] = b[j];
-                ++j;
-            }
-        }
-        while (i < a_len) {
-            c[i + j] = arr[i];
-            ++i;
-        }
-        while (j < b_len) {
-            c[i + j] = b[j];
-            ++j;
-        }
-        
-    }
 public:
     
     MyStorage() : size(0), data(nullptr) {}
@@ -72,7 +34,7 @@ public:
         return size;
     }
     
-    int& operator[] (int index) {  // Возвращаем ссылку на объект, так как масси динамический.
+    T& operator[] (int index) {  // Возвращаем ссылку на объект, так как масси динамический.
         assert(size >= 0 && index <= size);
         return data[index];
     }
@@ -178,15 +140,6 @@ public:
         std::cout << std::endl;
     }
     
-    void sort() {
-        MergeSort(data, size);
-    }
-    
-    T mul() {  // Умножение элементов массива
-        
-    }
-    
-    
 };
 
 int random(int a, int b) {
@@ -194,11 +147,15 @@ int random(int a, int b) {
     else return a + rand() % (a * -1 + b);
 }
 
-
+class Animal {
+    
+};
 
 int main() {
     
     srand(time(NULL));
+    
+    MyStorage<Animal> zoo;
     
     MyStorage<int> arr;
     std::cout << "Пустой ли массив?" << std::endl;
@@ -228,7 +185,6 @@ int main() {
     }
     std::cout << std::endl;
     std::cout << "----Массив после сортировки----" << std::endl;
-    arr.sort();
     arr.print();
     std::cout << "-------------------------------" << std::endl;
 
@@ -294,8 +250,16 @@ int main() {
     std::cout << "Массив после метода pop: ";
     arr.print();
     
-    //std::cout << "----Элементы массива----" << std::endl;
-    //arr.print();
+    
+    std::cout << "Вызов методов объектов" << std::endl;
+    MyStorage<std::string> strs;
+    strs.push_back("Hello");
+    strs.push_back("world");
+    strs.push_back("!");
+    strs.print();
+    strs[2] = '?';
+    std::cout << strs[1].length() << std::endl;
+    strs.print();
     
     return 0;
 }
